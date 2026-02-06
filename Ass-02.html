@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best-Mart Kopargaon</title>
+    <style>
+        :root {
+            --primary: #1f3c88;
+            --primary-light: #4ca1af;
+            --accent: #f0a500;
+            --accent-soft: #ffe4b5;
+            --bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --muted: #7b8ba3;
+        }
+
+        body:has(#dark-toggle:checked) {
+            --bg: #020617;
+            --card-bg: #020617;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top, #f9fcff 0, #eef2f7 45%, #dde3f0 100%);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            position: relative;
+            overflow: hidden;
+            background:
+                url("images/header-bg.jpg") center/cover fixed,
+                linear-gradient(135deg, var(--primary) 0%, #182848 40%, var(--primary-light) 100%);
+            background-blend-mode: multiply;
+            color: white;
+            padding: 28px 6%;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 10% 0, rgba(255,255,255,0.16) 0, transparent 55%),
+                        radial-gradient(circle at 90% 100%, rgba(255,255,255,0.12) 0, transparent 55%);
+            opacity: 0.9;
+        }
+
+        .header-inner {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .header-text h1 {
+            margin: 0;
+            font-size: 2.4rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .header-text p {
+            margin: 6px 0 0;
+            font-size: 1.02rem;
+            color: #e0e7ff;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 0.85rem;
+            color: #fefefe;
+        }
+
+        .header-badge span.dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2ecc71;
+            box-shadow: 0 0 8px rgba(46,204,113,0.8);
+        }
+
+        .header-logo-wrapper {
+            position: relative;
+        }
+
+        .header-logo-wrapper img {
+            height: 180px;
+            width: auto;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            transform: translateY(0);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .header-logo-wrapper::after {
+            content: "Since 2026";
+            position: absolute;
+            bottom: -12px;
+            right: 18px;
+            background: rgba(0,0,0,0.55);
+            color: #fefefe;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .header-logo-wrapper img:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.4);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background-color: #111827;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 8px 6%;
+            box-shadow: 0 3px 10px rgba(15,23,42,0.45);
+        }
+
+        nav a {
+            color: #e5e7eb;
+            padding: 10px 18px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s, background-color 0.3s, transform 0.2s, border-color 0.3s;
+        }
+
+        nav a::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 0 0, rgba(255,255,255,0.3) 0, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        nav a:hover {
+            background-color: #111827;
+            color: #facc15;
+            border-color: rgba(251, 191, 36, 0.7);
+            transform: translateY(-2px);
+        }
+
+        nav a:hover::before {
+            opacity: 1;
+        }
+
+        .offer-ticker {
+            overflow: hidden;
+            white-space: nowrap;
+            background: linear-gradient(90deg, #f97316, #facc15);
+            color: #111827;
+            padding: 6px 0;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 10px rgba(248,113,22,0.45);
+        }
+
+        .offer-ticker span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 18s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        main {
+            padding: 30px 6% 40px;
+            background-color: var(--bg);
+        }
+
+        .welcome-section {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 34px;
+        }
+
+        .welcome-text h2 {
+            margin: 0 0 8px;
+            font-size: 1.9rem;
+            color: var(--primary);
+        }
+
+        .welcome-text p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .welcome-highlight {
+            margin-top: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+
+        .highlight-pill {
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(31, 64, 104, 0.08);
+            color: var(--primary);
+            border: 1px dashed rgba(31, 64, 104, 0.35);
+        }
+
+        .welcome-logo {
+            max-width: 330px;
+            width: 100%;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(15,23,42,0.28);
+            transform: translateY(0);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .welcome-logo:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 32px rgba(15,23,42,0.35);
+        }
+
+        h3.section-title {
+            margin-top: 0;
+            margin-bottom: 14px;
+            font-size: 1.35rem;
+            color: #111827;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h3.section-title::before {
+            content: "";
+            width: 6px;
+            height: 22px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--accent), #f97316);
+        }
+
+        .table-wrapper {
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 14px 18px 4px;
+            box-shadow: 0 8px 22px rgba(15,23,42,0.12);
+            margin-bottom: 32px;
+            border: 1px solid rgba(148,163,184,0.35);
+        }
+
+        .table-subtitle {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin: 0 0 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.93rem;
+        }
+
+        th {
+            background: linear-gradient(90deg, #1f2937, #111827);
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f9fafb;
+        }
+
+        tr:hover td {
+            background-color: #eef2ff;
+        }
+
+        .badge-time {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            background: rgba(59,130,246,0.1);
+            color: #1d4ed8;
+            border-radius: 999px;
+            font-size: 0.8rem;
+        }
+
+        .badge-open {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            background: rgba(16,185,129,0.12);
+            color: #059669;
+            border-radius: 999px;
+            font-size: 0.8rem;
+        }
+
+        
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .products-header p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
+            margin-top: 10px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 14px 14px 16px;
+            text-align: left;
+            box-shadow: 0 10px 24px rgba(15,23,42,0.12);
+            border: 1px solid rgba(148,163,184,0.3);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background: radial-gradient(circle at 0 0, rgba(248,250,252,0.65) 0, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 34px rgba(15,23,42,0.22);
+            border-color: rgba(248, 180, 0, 0.8);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            border-radius: 14px;
+            margin-bottom: 10px;
+        }
+
+        .product-card h3 {
+            margin: 6px 0 4px;
+            font-size: 1.05rem;
+            color: #111827;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 4px 0 10px;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .price {
+            color: #dc5a13;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .unit {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-left: 2px;
+        }
+
+        .tag {
+            padding: 2px 7px;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.7);
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        button {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            margin-top: 4px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 8px 18px rgba(22,163,74,0.35);
+            transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+        }
+
+        button::before {
+            content: "+";
+            font-weight: 700;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 22px rgba(21,128,61,0.45);
+        }
+
+        button:active {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 4px 12px rgba(21,128,61,0.4);
+        }
+
+        
+        footer {
+            background: #0f172a;
+            color: #d1d5db;
+            text-align: center;
+            padding: 18px 6%;
+            margin-top: auto;
+            font-size: 0.9rem;
+            border-top: 1px solid #1f2937;
+        }
+
+        footer span.brand {
+            color: #facc15;
+            font-weight: 600;
+        }
+
+        
+        .theme-toggle {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 1200;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(15,23,42,0.85);
+            color: #e5e7eb;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(15,23,42,0.7);
+        }
+
+        .theme-toggle input {
+            display: none;
+        }
+
+        .toggle-thumb {
+            width: 26px;
+            height: 14px;
+            border-radius: 999px;
+            background: #111827;
+            position: relative;
+            box-shadow: inset 0 0 0 1px #4b5563;
+        }
+
+        .toggle-thumb::before {
+            content: "";
+            position: absolute;
+            top: 1px;
+            left: 2px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            transition: transform 0.22s ease;
+        }
+
+        #dark-toggle:checked + .toggle-thumb::before {
+            transform: translateX(11px);
+        }
+
+      
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        .fade-in.delay-1 { animation-delay: 0.1s; }
+        .fade-in.delay-2 { animation-delay: 0.2s; }
+        .fade-in.delay-3 { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        
+        @media (max-width: 900px) {
+            .welcome-section {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-logo-wrapper {
+                align-self: center;
+            }
+            .header-logo-wrapper img {
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px 5%;
+            }
+            nav {
+                padding-inline: 4%;
+            }
+            main {
+                padding-inline: 5%;
+            }
+            .product-card img {
+                height: 190px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <label class="theme-toggle">
+        <input id="dark-toggle" type="checkbox">
+        <span class="toggle-thumb"></span>
+        <span class="toggle-text">Dark mode</span>
+    </label>
+
+    <header id="home">
+        <div class="header-inner">
+            <div class="header-text">
+                <h1>Best-Mart Kopargaon</h1>
+                <p>Your daily supermarket for fresh groceries and smart savings.</p>
+                <div class="header-badge">
+                    <span class="dot"></span>
+                    Open today · 8 AM – 10 PM
+                </div>
+            </div>
+            <div class="header-logo-wrapper">
+                <img src="images/logo.jpeg" alt="Best-Mart Logo">
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#groceries">Groceries</a>
+        <a href="#household">Household</a>
+        <a href="#personal-care">Personal Care</a>
+        <a href="#vegetables">Vegetables</a>
+        <a href="#offers">Offers</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+
+    
+    <div class="offer-ticker" id="offers">
+        <span>🔥 Today only: Extra 5% off on groceries above ₹999 · Fresh veggies every morning · Weekend combo packs coming soon!</span>
+    </div>
+
+    <main>
+        
+        <section class="welcome-section fade-in delay-1">
+            <div class="welcome-text">
+                <h2>Welcome to D-Mart Kopargaon</h2>
+                <p>Find fresh groceries, daily essentials, and household needs at the best prices under one roof.</p>
+                <div class="welcome-highlight">
+                    <span class="highlight-pill">Everyday low prices</span>
+                    <span class="highlight-pill">Fresh produce daily</span>
+                    <span class="highlight-pill">Safe & hygienic shopping</span>
+                </div>
+            </div>
+            <div>
+                <img src="OIP.webp" alt="Best-Mart Store" class="welcome-logo">
+            </div>
+        </section>
+
+        
+        <section class="fade-in delay-2">
+            <h3 class="section-title">Our Facilities</h3>
+            <p class="table-subtitle">Shop the way you like – in-store or from the comfort of your home.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Description</th>
+                            <th>Availability</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Home Delivery</td>
+                            <td>Free delivery on orders above ₹500 within Kopargaon city limits.</td>
+                            <td><span class="badge-time">9 AM – 9 PM</span></td>
+                        </tr>
+                        <tr>
+                            <td>In-store Shopping</td>
+                            <td>Wide aisles, air-conditioned and sanitized environment.</td>
+                            <td><span class="badge-time">8 AM – 10 PM</span></td>
+                        </tr>
+                        <tr>
+                            <td>Customer Support</td>
+                            <td>Friendly staff to assist with billing, returns and product queries.</td>
+                            <td><span class="badge-open">24 × 7 helpline</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        
+        <section class="fade-in delay-3" id="groceries">
+            <div class="products-header">
+                <h3 class="section-title">Featured Products</h3>
+                <p>Handpicked essentials at special prices.</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="basmati-rice.jpeg" alt="Basmati Rice">
+                    <h3>Basmati Rice</h3>
+                    <div class="product-meta">
+                        <span class="tag">Premium quality</span>
+                        <span class="price">₹450<span class="unit"> / 5 kg</span></span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="sunflower-oil.jpeg" alt="Sunflower Oil">
+                    <h3>Sunflower Oil</h3>
+                    <div class="product-meta">
+                        <span class="tag">Refined & light</span>
+                        <span class="price">₹180<span class="unit"> / 1 L</span></span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="almonds.webp" alt="Fresh Almonds">
+                    <h3>Fresh Almonds</h3>
+                    <div class="product-meta">
+                        <span class="tag">Energy booster</span>
+                        <span class="price">₹800<span class="unit"> / 1 kg</span></span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="organic-sugar.webp" alt="Organic Sugar">
+                    <h3>Organic Sugar</h3>
+                    <div class="product-meta">
+                        <span class="tag">Sulphur-free</span>
+                        <span class="price">₹60<span class="unit"> / 1 kg</span></span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="groundnut-oil.jpeg" alt="Groundnut Oil">
+                    <h3>Groundnut Oil</h3>
+                    <div class="product-meta">
+                        <span class="tag">Cold pressed</span>
+                        <span class="price">₹200<span class="unit"> / 1 L</span></span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="fogg-black-series.jpeg" alt="Fogg Black Series">
+                    <h3>Fogg Black Series</h3>
+                    <div class="product-meta">
+                        <span class="tag">Long-lasting fragrance</span>
+                        <span class="price">₹300</span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="handwash.jpeg" alt="HandWash">
+                    <h3>HandWash</h3>
+                    <div class="product-meta">
+                        <span class="tag">Germ protection</span>
+                        <span class="price">₹200</span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="coffee.jpeg" alt="Coffee">
+                    <h3>Coffee</h3>
+                    <div class="product-meta">
+                        <span class="tag">Rich aroma</span>
+                        <span class="price">₹100</span>
+                    </div>
+                    <button>Add to Cart</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <p>&copy; 2026 <span class="brand">Best-Mart Kopargaon</span>. All rights reserved.</p>
+    </footer>
+</body>
+</html>
