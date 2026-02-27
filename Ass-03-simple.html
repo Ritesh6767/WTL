@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple JS Validation</title>
+</head>
+<body>
+
+  <h2>Registration Form</h2>
+
+  <form onsubmit="return validateForm()">
+    <label>
+      Name:
+      <input type="text" id="name">
+    </label>
+    <br><br>
+
+    <label>
+      Email:
+      <input type="text" id="email">
+    </label>
+    <br><br>
+
+    <label>
+      Phone:
+      <input type="text" id="phone">
+    </label>
+    <br><br>
+
+    <label>
+      City:
+      <input type="text" id="city">
+    </label>
+    <br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    function validateForm() {
+      const name  = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const city  = document.getElementById("city").value.trim();
+
+      if (!name || !email || !phone || !city) {
+        alert("Please fill all the details.");
+        return false; // stop form submit
+      }
+
+      // extra example: simple email check (optional)
+      if (!email.includes("@")) {
+        alert("Please enter a valid email.");
+        return false;
+      }
+
+      alert("Form submitted successfully!");
+      return true; // allow form submit
+    }
+  </script>
+
+</body>
+</html>

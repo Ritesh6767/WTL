@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+    <title>Register</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-controller="RegisterController">
+
+<h2>Registration Page</h2>
+
+<form ng-submit="register()">
+
+    First Name:
+    <input type="text" ng-model="user.firstName" required>
+    <br><br>
+
+    Last Name:
+    <input type="text" ng-model="user.lastName" required>
+    <br><br>
+
+    Mobile No:
+    <input type="text" ng-model="user.mobile" required>
+    <br><br>
+
+    Username:
+    <input type="text" ng-model="user.username" required>
+    <br><br>
+
+    Password:
+    <input type="password" ng-model="user.password" required>
+    <br><br>
+
+    Email:
+    <input type="email" ng-model="user.email" required>
+    <br><br>
+
+    <button type="submit">Register</button>
+
+</form>
+
+<p>{{message}}</p>
+
+<br>
+Already registered?
+<a href="Ass-04-login.html">Go to Login</a>
+
+<script>
+angular.module("myApp", [])
+.controller("RegisterController", function($scope) {
+
+    $scope.register = function() {
+        localStorage.setItem("userData", JSON.stringify($scope.user));
+        $scope.message = "Registration Successful!";
+        $scope.user = {};
+    };
+
+});
+</script>
+
+</body>
+</html>
